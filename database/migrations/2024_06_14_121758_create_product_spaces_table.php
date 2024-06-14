@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::create('product_spaces', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('product_id');
+            $table->foreignId('project_id');
             $table->foreignId('project_space_id');
             $table->foreignId('product_id')->nullable();
             $table->string('name');

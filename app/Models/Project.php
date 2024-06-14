@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Project extends Model
@@ -20,12 +21,7 @@ class Project extends Model
         'client_id',
     ];
 
-    public function client(): BelongsTo
-    {
-        return $this->belongsTo(Person::class, 'client_id');
-    }
-
-    protected function casts()
+    protected function casts(): array
     {
         return [
             'won_at' => 'datetime',
@@ -33,5 +29,20 @@ class Project extends Model
             'started_at' => 'datetime',
             'finished_at' => 'datetime',
         ];
+    }
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Person::class, 'client_id');
+    }
+
+    public function quotes(): HasMany
+    {
+        return $this->hasMany(Quote::class);
+    }
+
+    public function spaces(): HasMany
+    {
+        return $this->hasMany(ProjectSpace::class, 'project_id');
     }
 }

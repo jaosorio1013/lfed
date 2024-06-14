@@ -19,12 +19,12 @@ class ProductSpace extends Model
         'description',
     ];
 
-    public function product(): BelongsTo
+    public function project(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Project::class);
     }
 
-    public function projectSpace(): BelongsTo
+    public function space(): BelongsTo
     {
         return $this->belongsTo(ProjectSpace::class);
     }

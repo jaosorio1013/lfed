@@ -12,7 +12,7 @@ class PersonPolicy
 
     public function viewAny(User $user): bool
     {
-        
+        return true;
     }
 
     public function view(User $user, Person $person): bool
