@@ -15,6 +15,9 @@ class ProductQuote extends Model
         'project_id',
         'quote_id',
         'product_project_provider_id',
+        'product_id',
+        'product_category_id',
+        'total',
     ];
 
     public function project(): BelongsTo
@@ -30,5 +33,15 @@ class ProductQuote extends Model
     public function productProjectProvider(): BelongsTo
     {
         return $this->belongsTo(ProductProjectProvider::class);
+    }
+
+    public function product(): BelongsTo
+    {
+        return $this->belongsTo(Product::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(ProductCategory::class, 'product_category_id');
     }
 }

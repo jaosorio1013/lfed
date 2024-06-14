@@ -17,6 +17,8 @@ class ProductProjectProviderFactory extends Factory
 
     public function definition(): array
     {
+
+
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
@@ -32,7 +34,6 @@ class ProductProjectProviderFactory extends Factory
             'project_id' => Project::factory(),
             'provider_id' => Person::factory(),
             // 'product_id' => Product::factory(),
-            // 'product_space_id' => ProductSpace::factory(),
         ];
     }
 }

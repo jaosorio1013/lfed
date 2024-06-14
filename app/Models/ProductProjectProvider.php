@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ProductProjectProvider extends Model
@@ -16,7 +15,7 @@ class ProductProjectProvider extends Model
         'project_id',
         'provider_id',
         'product_id',
-        'product_space_id',
+        'product_category_id',
         'has_materiales',
         'has_transporte',
         'has_suministro',
@@ -37,13 +36,28 @@ class ProductProjectProvider extends Model
         return $this->belongsTo(Person::class, 'provider_id');
     }
 
-    public function products(): HasMany
+    public function product(): BelongsTo
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsTo(Product::class);
     }
 
-    public function products_space(): HasMany
+    public function category(): BelongsTo
     {
-        return $this->hasMany(ProductSpace::class);
+        return $this->belongsTo(ProductCategory::class);
+    }
+
+    public function getProductNameAttribute(): string
+    {
+        return $this->product->name ?? '';
+    }
+
+    public function getProductDescriptionAttribute(): string
+    {
+        return $this->product->description ?? '';
+    }
+
+    public function getCategoryNameAttribute(): string
+    {
+        return $this->category->name ?? '';
     }
 }

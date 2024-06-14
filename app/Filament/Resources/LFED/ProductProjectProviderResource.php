@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources\LFED;
 
-use App\Filament\Resources\LFED\QuoteResource\Pages;
-use App\Models\Quote;
-use Filament\Forms\Components\DatePicker;
+use App\Filament\Resources\LFED\ProductProjectProviderResource\Pages;
+use App\Models\ProductProjectProvider;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -25,11 +25,11 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class QuoteResource extends Resource
+class ProductProjectProviderResource extends Resource
 {
-    protected static ?string $model = Quote::class;
+    protected static ?string $model = ProductProjectProvider::class;
 
-    protected static ?string $slug = 'l-f-e-d/quotes';
+    protected static ?string $slug = 'l-f-e-d/product-project-providers';
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -42,45 +42,48 @@ class QuoteResource extends Resource
                     ->searchable()
                     ->required(),
 
-                TextInput::make('identification')
+                TextInput::make('project_space_id')
+                    ->integer(),
+
+                Select::make('provider_id')
+                    ->relationship('provider', 'name')
+                    ->searchable()
                     ->required(),
 
-                TextInput::make('subtotal')
+                TextInput::make('product_id')
+                    ->required()
+                    ->integer(),
+
+                TextInput::make('product_type')
+                    ->required(),
+
+                Checkbox::make('has_materiales'),
+
+                Checkbox::make('has_transporte'),
+
+                Checkbox::make('has_suministro'),
+
+                Checkbox::make('has_instalacion'),
+
+                TextInput::make('quantity')
                     ->numeric(),
 
-                TextInput::make('discount')
+                TextInput::make('price_per_unit')
                     ->numeric(),
 
-                TextInput::make('percentage_utilidad')
+                TextInput::make('total')
                     ->numeric(),
 
-                TextInput::make('percentage_administracion')
+                TextInput::make('valid_until')
                     ->numeric(),
-
-                TextInput::make('percentage_inprevistos')
-                    ->numeric(),
-
-                TextInput::make('percentage_retefuente')
-                    ->numeric(),
-
-                DatePicker::make('valid_until'),
-
-                DatePicker::make('sent_at')
-                    ->label('Sent Date'),
-
-                DatePicker::make('approved_at')
-                    ->label('Approved Date'),
-
-                DatePicker::make('rejected_at')
-                    ->label('Rejected Date'),
 
                 Placeholder::make('created_at')
                     ->label('Created Date')
-                    ->content(fn(?Quote $record): string => $record?->created_at?->diffForHumans() ?? '-'),
+                    ->content(fn(?ProductProjectProvider $record): string => $record?->created_at?->diffForHumans() ?? '-'),
 
                 Placeholder::make('updated_at')
                     ->label('Last Modified Date')
-                    ->content(fn(?Quote $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
+                    ->content(fn(?ProductProjectProvider $record): string => $record?->updated_at?->diffForHumans() ?? '-'),
             ]);
     }
 
@@ -92,34 +95,31 @@ class QuoteResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                // TextColumn::make('identification'),
+                TextColumn::make('project_space_id'),
 
-                // TextColumn::make('subtotal'),
-                //
-                // TextColumn::make('discount'),
+                TextColumn::make('provider.name')
+                    ->searchable()
+                    ->sortable(),
 
-                // TextColumn::make('percentage_utilidad'),
-                //
-                // TextColumn::make('percentage_administracion'),
-                //
-                // TextColumn::make('percentage_inprevistos'),
-                //
-                // TextColumn::make('percentage_retefuente'),
+                TextColumn::make('product_id'),
 
-                TextColumn::make('valid_until')
-                    ->date(),
+                TextColumn::make('product_type'),
 
-                // TextColumn::make('sent_at')
-                //     ->label('Sent Date')
-                //     ->date(),
-                //
-                // TextColumn::make('approved_at')
-                //     ->label('Approved Date')
-                //     ->date(),
-                //
-                // TextColumn::make('rejected_at')
-                //     ->label('Rejected Date')
-                //     ->date(),
+                TextColumn::make('has_materiales'),
+
+                TextColumn::make('has_transporte'),
+
+                TextColumn::make('has_suministro'),
+
+                TextColumn::make('has_instalacion'),
+
+                TextColumn::make('quantity'),
+
+                TextColumn::make('price_per_unit'),
+
+                TextColumn::make('total'),
+
+                TextColumn::make('valid_until'),
             ])
             ->filters([
                 TrashedFilter::make(),
@@ -142,9 +142,9 @@ class QuoteResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListQuotes::route('/'),
-            'create' => Pages\CreateQuote::route('/create'),
-            'edit' => Pages\EditQuote::route('/{record}/edit'),
+            'index' => Pages\ListProductProjectProviders::route('/'),
+            'create' => Pages\CreateProductProjectProvider::route('/create'),
+            'edit' => Pages\EditProductProjectProvider::route('/{record}/edit'),
         ];
     }
 
@@ -158,12 +158,12 @@ class QuoteResource extends Resource
 
     public static function getGlobalSearchEloquentQuery(): Builder
     {
-        return parent::getGlobalSearchEloquentQuery()->with(['project']);
+        return parent::getGlobalSearchEloquentQuery()->with(['project', 'provider']);
     }
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['project.name'];
+        return ['project.name', 'provider.name'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
@@ -172,6 +172,10 @@ class QuoteResource extends Resource
 
         if ($record->project) {
             $details['Project'] = $record->project->name;
+        }
+
+        if ($record->provider) {
+            $details['Provider'] = $record->provider->name;
         }
 
         return $details;

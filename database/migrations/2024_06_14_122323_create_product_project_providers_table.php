@@ -13,7 +13,7 @@ return new class extends Migration {
             $table->foreignId('project_id');
             $table->foreignId('provider_id');
             $table->foreignId('product_id')->nullable();
-            $table->foreignId('product_space_id')->nullable();
+            $table->foreignId('product_category_id')->nullable();
             $table->boolean('has_materiales');
             $table->boolean('has_transporte');
             $table->boolean('has_suministro');
