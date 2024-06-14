@@ -17,25 +17,31 @@ class ProjectSpacePolicy
 
     public function view(User $user, ProjectSpace $projectSpace): bool
     {
+        return true;
     }
 
     public function create(User $user): bool
     {
+        return true;
     }
 
     public function update(User $user, ProjectSpace $projectSpace): bool
     {
+        return true;
     }
 
     public function delete(User $user, ProjectSpace $projectSpace): bool
     {
+        return true;
     }
 
     public function restore(User $user, ProjectSpace $projectSpace): bool
     {
+        return true;
     }
 
     public function forceDelete(User $user, ProjectSpace $projectSpace): bool
     {
+        return true;
     }
 }
