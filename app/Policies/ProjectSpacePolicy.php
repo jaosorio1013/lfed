@@ -12,7 +12,7 @@ class ProjectSpacePolicy
 
     public function viewAny(User $user): bool
     {
-        
+        return true;
     }
 
     public function view(User $user, ProjectSpace $projectSpace): bool

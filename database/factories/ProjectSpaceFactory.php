@@ -18,7 +18,7 @@ class ProjectSpaceFactory extends Factory
             'updated_at' => Carbon::now(),
             'name' => $this->faker->name(),
             'description' => $this->faker->text(),
-            'measures' => $this->faker->randomFloat(),
+            'measures' => $this->faker->randomFloat(2, 1, 100),
             'approved' => $this->faker->boolean(),
 
             'project_id' => Project::factory(),

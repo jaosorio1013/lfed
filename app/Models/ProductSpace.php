@@ -12,7 +12,7 @@ class ProductSpace extends Model
     use SoftDeletes, HasFactory;
 
     protected $fillable = [
-        'product_id',
+        'project_id',
         'project_space_id',
         'product_id',
         'name',

@@ -15,8 +15,8 @@ class PersonFactory extends Factory
         return [
             'created_at' => Carbon::now(),
             'updated_at' => Carbon::now(),
-            'identification_type' => $this->faker->randomNumber(),
-            'identification_number' => $this->faker->word(),
+            'identification_type' => $this->faker->randomElement([1, 2, 3]),
+            'identification_number' => $this->faker->uuid(),
             'name' => $this->faker->name(),
             'phone' => $this->faker->phoneNumber(),
             'email' => $this->faker->unique()->safeEmail(),

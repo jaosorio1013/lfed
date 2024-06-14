@@ -21,4 +21,9 @@ class Product extends Model
     {
         return $this->belongsTo(ProductCategory::class);
     }
+
+    public function products_on_space()
+    {
+        return $this->hasMany(ProductSpace::class);
+    }
 }

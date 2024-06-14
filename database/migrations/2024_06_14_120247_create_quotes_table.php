@@ -11,8 +11,8 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('project_id');
             $table->string('identification')->index();
-            $table->decimal('subtotal')->nullable();
-            $table->decimal('discount')->nullable();
+            $table->decimal('subtotal', 20)->nullable();
+            $table->decimal('discount', 20)->nullable();
             $table->decimal('percentage_utilidad')->nullable();
             $table->decimal('percentage_administracion')->nullable();
             $table->decimal('percentage_inprevistos')->nullable();

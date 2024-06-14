@@ -9,19 +9,19 @@ return new class extends Migration {
     {
         Schema::create('product_project_providers', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('parent_id')->nullable();
             $table->foreignId('project_id');
-            $table->foreignId('project_space_id')->nullable();
             $table->foreignId('provider_id');
-            $table->unsignedBigInteger('product_id');
-            $table->string('product_type');
+            $table->foreignId('product_id')->nullable();
+            $table->foreignId('product_space_id')->nullable();
             $table->boolean('has_materiales');
             $table->boolean('has_transporte');
             $table->boolean('has_suministro');
             $table->boolean('has_instalacion');
             $table->decimal('quantity')->nullable();
-            $table->decimal('price_per_unit')->nullable();
-            $table->decimal('total')->nullable();
-            $table->decimal('valid_until')->nullable();
+            $table->decimal('price_per_unit', 20)->nullable();
+            $table->decimal('total', 20)->nullable();
+            $table->dateTime('valid_until')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

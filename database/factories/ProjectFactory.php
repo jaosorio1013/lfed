@@ -22,7 +22,9 @@ class ProjectFactory extends Factory
             'started_at' => Carbon::now(),
             'finished_at' => Carbon::now(),
 
-            'client_id' => Person::factory(),
+            'client_id' => Person::factory([
+                'is_client' => true,
+            ]),
         ];
     }
 }
