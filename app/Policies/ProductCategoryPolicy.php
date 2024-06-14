@@ -12,7 +12,7 @@ class ProductCategoryPolicy
 
     public function viewAny(User $user): bool
     {
-        return true;
+        return false;
     }
 
     public function view(User $user, ProductCategory $productCategory): bool
