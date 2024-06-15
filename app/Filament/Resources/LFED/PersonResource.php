@@ -37,7 +37,11 @@ class PersonResource extends Resource
         return $form
             ->schema([
                 Select::make('identification_type')
-                    ->options(Person::IDENTIFICATION_TYPE_CEDULA)
+                    ->options([
+                        Person::IDENTIFICATION_TYPE_CEDULA => 'Cédula',
+                        Person::IDENTIFICATION_TYPE_NIT => 'NIT',
+                        Person::IDENTIFICATION_TYPE_PASAPORTE => 'Pasaporte',
+                    ])
                     ->default(Person::IDENTIFICATION_TYPE_CEDULA),
 
                 TextInput::make('identification_number')

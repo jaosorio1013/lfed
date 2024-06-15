@@ -37,6 +37,11 @@ class ProjectResource extends Resource
     {
         return $form
             ->schema([
+                Select::make('client_id')
+                    ->relationship('client', 'name')
+                    ->searchable()
+                    ->required(),
+
                 TextInput::make('name')
                     ->required(),
 
@@ -51,11 +56,6 @@ class ProjectResource extends Resource
 
                 DatePicker::make('finished_at')
                     ->label('Finished Date'),
-
-                Select::make('client_id')
-                    ->relationship('client', 'name')
-                    ->searchable()
-                    ->required(),
 
                 Placeholder::make('created_at')
                     ->label('Created Date')

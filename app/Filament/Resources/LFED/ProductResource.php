@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LFED;
 use App\Filament\Resources\LFED\ProductResource\Pages;
 use App\Models\Product;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -39,12 +40,15 @@ class ProductResource extends Resource
                 TextInput::make('name')
                     ->required(),
 
-                TextInput::make('description'),
+                RichEditor::make('description'),
 
                 Select::make('product_category_id')
                     ->relationship('productCategory', 'name')
                     ->searchable()
                     ->required(),
+
+                // TextInput::make('project_space_id')
+                //     ->integer(),
 
                 Placeholder::make('created_at')
                     ->label('Created Date')
@@ -64,11 +68,14 @@ class ProductResource extends Resource
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('description'),
+                // TextColumn::make('description')
+                //     ->html(),
 
                 TextColumn::make('productCategory.name')
                     ->searchable()
                     ->sortable(),
+
+                // TextColumn::make('project_space_id'),
             ])
             ->filters([
                 TrashedFilter::make(),

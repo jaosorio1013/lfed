@@ -7,4 +7,4 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('export-quote/{quote}', ExportQuoteController::class);
+Route::get('export-quote', ExportQuoteController::class)->name('export-quote');

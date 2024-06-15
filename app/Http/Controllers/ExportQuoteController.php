@@ -4,18 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\ProductQuote;
 use App\Models\Quote;
+use Illuminate\Http\Request;
 
 class ExportQuoteController extends Controller
 {
-    public function __invoke(
-        Quote $quote,
-        $showValues = true,
-        $breakOnTables = false,
-        $centeredText = false,
-        $showSummary = false,
-        $inlineValues = false,
-    )
+    public function __invoke(Request $request)
     {
+        $quote = Quote::findOrFail($request->quote_id);
         $quoteItemsByCategory = ProductQuote::with('category:id,name', 'productProjectProvider')
             ->where('quote_id', $quote->id)
             ->get([
@@ -32,11 +27,11 @@ class ExportQuoteController extends Controller
                 ];
             });
 
-        view()->share('showValues', $showValues);
-        view()->share('breakOnTables', $breakOnTables);
-        view()->share('centeredText', $centeredText);
-        view()->share('showSummary', $showSummary);
-        view()->share('inlineValues', $inlineValues);
+        view()->share('showValues', (bool)$request->show_values);
+        view()->share('breakOnTables', (bool)$request->break_on_tables);
+        view()->share('centeredText', (bool)$request->center_text);
+        view()->share('showSummary', (bool)$request->show_summary);
+        view()->share('inlineValues', (bool)$request->inline_values);
         view()->share('total', $quote->subtotal + $quote->aui_value + $quote->iva_value);
 
         return view('quotes.index', compact('quote', 'quoteItemsByCategory'));

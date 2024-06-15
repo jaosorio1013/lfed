@@ -16,4 +16,16 @@ class ListProjects extends ListRecords
             CreateAction::make(),
         ];
     }
+
+    public function getTabs(): array
+    {
+        return [
+            null => ListRecords\Tab::make('Todo'),
+            'Activos' => ListRecords\Tab::make()->query(fn ($query) => $query->whereNotNull('won_at')->whereNull('finished_at')),
+            // 'processing' => ListRecords\Tab::make()->query(fn ($query) => $query->where('status', 'processing')),
+            // 'shipped' => ListRecords\Tab::make()->query(fn ($query) => $query->where('status', 'shipped')),
+            // 'delivered' => ListRecords\Tab::make()->query(fn ($query) => $query->where('status', 'delivered')),
+            // 'cancelled' => ListRecords\Tab::make()->query(fn ($query) => $query->where('status', 'cancelled')),
+        ];
+    }
 }

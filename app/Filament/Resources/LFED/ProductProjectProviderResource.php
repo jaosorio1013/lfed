@@ -5,6 +5,7 @@ namespace App\Filament\Resources\LFED;
 use App\Filament\Resources\LFED\ProductProjectProviderResource\Pages;
 use App\Models\ProductProjectProvider;
 use Filament\Forms\Components\Checkbox;
+use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
@@ -18,6 +19,7 @@ use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -37,25 +39,25 @@ class ProductProjectProviderResource extends Resource
     {
         return $form
             ->schema([
+                TextInput::make('parent_id')
+                    ->integer(),
+
                 Select::make('project_id')
                     ->relationship('project', 'name')
                     ->searchable()
                     ->required(),
-
-                TextInput::make('project_space_id')
-                    ->integer(),
 
                 Select::make('provider_id')
                     ->relationship('provider', 'name')
                     ->searchable()
                     ->required(),
 
-                TextInput::make('product_id')
-                    ->required()
-                    ->integer(),
+                Select::make('product_id')
+                    ->relationship('product', 'name')
+                    ->searchable(),
 
-                TextInput::make('product_type')
-                    ->required(),
+                TextInput::make('product_category_id')
+                    ->integer(),
 
                 Checkbox::make('has_materiales'),
 
@@ -74,8 +76,7 @@ class ProductProjectProviderResource extends Resource
                 TextInput::make('total')
                     ->numeric(),
 
-                TextInput::make('valid_until')
-                    ->numeric(),
+                DatePicker::make('valid_until'),
 
                 Placeholder::make('created_at')
                     ->label('Created Date')
@@ -91,21 +92,23 @@ class ProductProjectProviderResource extends Resource
     {
         return $table
             ->columns([
+                TextColumn::make('parent_id'),
+
                 TextColumn::make('project.name')
                     ->searchable()
                     ->sortable(),
-
-                TextColumn::make('project_space_id'),
 
                 TextColumn::make('provider.name')
                     ->searchable()
                     ->sortable(),
 
-                TextColumn::make('product_id'),
+                TextColumn::make('product.name')
+                    ->searchable()
+                    ->sortable(),
 
-                TextColumn::make('product_type'),
+                TextColumn::make('product_category_id'),
 
-                TextColumn::make('has_materiales'),
+                TextColumn::make('has_materiales'), // IconColumn
 
                 TextColumn::make('has_transporte'),
 
@@ -119,7 +122,8 @@ class ProductProjectProviderResource extends Resource
 
                 TextColumn::make('total'),
 
-                TextColumn::make('valid_until'),
+                TextColumn::make('valid_until')
+                    ->date(),
             ])
             ->filters([
                 TrashedFilter::make(),
@@ -158,17 +162,25 @@ class ProductProjectProviderResource extends Resource
 
     public static function getGlobalSearchEloquentQuery(): Builder
     {
-        return parent::getGlobalSearchEloquentQuery()->with(['project', 'provider']);
+        return parent::getGlobalSearchEloquentQuery()->with(['category', 'product', 'project', 'provider']);
     }
 
     public static function getGloballySearchableAttributes(): array
     {
-        return ['project.name', 'provider.name'];
+        return ['category.name', 'product.name', 'project.name', 'provider.name'];
     }
 
     public static function getGlobalSearchResultDetails(Model $record): array
     {
         $details = [];
+
+        if ($record->category) {
+            $details['Category'] = $record->category->name;
+        }
+
+        if ($record->product) {
+            $details['Product'] = $record->product->name;
+        }
 
         if ($record->project) {
             $details['Project'] = $record->project->name;

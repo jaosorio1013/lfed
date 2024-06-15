@@ -4,12 +4,15 @@ namespace App\Filament\Resources\LFED;
 
 use App\Filament\Resources\LFED\QuoteResource\Pages;
 use App\Models\Quote;
+use App\Models\User;
+use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Actions\BulkActionGroup;
 use Filament\Tables\Actions\DeleteAction;
 use Filament\Tables\Actions\DeleteBulkAction;
@@ -129,6 +132,42 @@ class QuoteResource extends Resource
                 DeleteAction::make(),
                 RestoreAction::make(),
                 ForceDeleteAction::make(),
+
+                Action::make('Descargar')
+                    // ->icon('heroicon-o-download')
+                    ->form([
+                        Checkbox::make('show_values')
+                            ->label('Mostrar Valores')
+                            ->default(true),
+
+                        Checkbox::make('show_summary')
+                            ->label('Mostrar Resumen')
+                            ->default(true),
+
+                        Checkbox::make('inline_values')
+                            ->label('Valor en línea')
+                            ->default(true),
+
+                        Checkbox::make('center_text')
+                            ->label('Texto Centrado')
+                            ->default(false),
+
+                        Checkbox::make('break_on_tables')
+                            ->label('Saltar en cada tabla')
+                            ->default(false),
+                    ])
+                    // ->url(fn(array $data, $record): string => route('export-quote', $record->id, $data))
+                    // ->url
+                    // ->action(function (array $data, $record): string {
+                    ->action(function (array $data, $record) {
+                        $data['quote_id'] = $record->id;
+
+                        return redirect()->route('export-quote', $data);
+                    })
+                    // ->modalContent(fn ($record): View => view(
+                    //     'filament.pages.actions.advance',
+                    //     ['record' => $record],
+                    // )),
             ])
             ->bulkActions([
                 BulkActionGroup::make([
