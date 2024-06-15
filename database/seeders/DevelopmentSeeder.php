@@ -26,11 +26,20 @@ class DevelopmentSeeder extends Seeder
             $quote = Quote::factory()->create(['project_id' => $project->id]);
 
             if (rand(1, 5) < 4) {
-                $this->createProductProjectProvider($project->id, $quote->id, false, $products->random()->first());
+                $this->createProductProjectProvider(
+                    $project->id,
+                    $quote->id,
+                    false,
+                    $products->random()->first()
+                );
             }
 
             if (rand(1, 5) < 4) {
-                $this->createProductProjectProvider($project->id, $quote->id, true);
+                $this->createProductProjectProvider(
+                    $project->id,
+                    $quote->id,
+                    true
+                );
             }
         }
     }
@@ -45,25 +54,20 @@ class DevelopmentSeeder extends Seeder
         $providerId = rand(1, 5);
         $parentId = null;
         if ($isGroup) {
-            $product = Product::factory()->create();
-
             $parent = ProductProjectProvider::factory()->create([
                 'project_id' => $projectId,
                 'provider_id' => $providerId,
                 'total' => rand(10000000, 50000000),
-                'product_id' => $product->id,
-                'product_category_id' => $product->product_category_id,
             ]);
 
             $parentId = $parent->id;
 
-            ProductQuote::create([
+            ProductQuote::factory()->create([
+                'product_category_id' => $parent->product_category_id,
                 'product_project_provider_id' => $parentId,
                 'project_id' => $projectId,
                 'quote_id' => $quoteId,
 
-                'product_id' => $product->id,
-                'product_category_id' => $product->product_category_id,
                 'total' => rand(10000000, 50000000),
             ]);
         }
@@ -75,8 +79,6 @@ class DevelopmentSeeder extends Seeder
             'parent_id' => $parentId,
             'project_id' => $projectId,
             'provider_id' => $providerId,
-            'product_id' => $product->id,
-            'product_category_id' => $product->product_category_id,
 
             'quantity' => $parentId ? null : $quantity,
             'price_per_unit' => $parentId ? null : $pricePerUnit,
@@ -90,13 +92,12 @@ class DevelopmentSeeder extends Seeder
         }
 
         foreach ($productsProjectProvider as $productProjectProvider) {
-            ProductQuote::create([
+            ProductQuote::factory()->create([
+                'product_category_id' => $productProjectProvider->product_category_id,
                 'product_project_provider_id' => $productProjectProvider->id,
                 'project_id' => $projectId,
                 'quote_id' => $quoteId,
 
-                'product_id' => $product->id,
-                'product_category_id' => $product->product_category_id,
                 'total' => rand(10000000, 50000000),
             ]);
         }

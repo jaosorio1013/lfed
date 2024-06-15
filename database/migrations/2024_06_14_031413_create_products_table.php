@@ -12,7 +12,8 @@ return new class extends Migration {
             $table->string('name');
             $table->text('description')->nullable();
             $table->foreignId('product_category_id');
-            $table->foreignId('project_space_id')->nullable();
+            // $table->foreignId('project_id')->nullable();
+            // $table->foreignId('project_space_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

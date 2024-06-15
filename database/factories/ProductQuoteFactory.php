@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\ProductCategory;
 use App\Models\ProductProjectProvider;
 use App\Models\ProductQuote;
 use App\Models\Project;
@@ -22,6 +23,7 @@ class ProductQuoteFactory extends Factory
             'project_id' => Project::factory(),
             'quote_id' => Quote::factory(),
             'product_project_provider_id' => ProductProjectProvider::factory(),
+            'product_category_id' => ProductCategory::inRandomOrder()->first()->id,
         ];
     }
 }

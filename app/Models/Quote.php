@@ -67,11 +67,6 @@ class Quote extends Model
         return $this->subtotal * ($this->aui_percentage * 0.01);
     }
 
-    public function getTotalAttribute()
-    {
-        return $this->subtotal + $this->aui_value + $this->iva_value;
-    }
-
     public function getIvaValueAttribute()
     {
         return $this->subtotal * (0.19);

@@ -12,12 +12,17 @@ return new class extends Migration {
             $table->foreignId('parent_id')->nullable();
             $table->foreignId('project_id');
             $table->foreignId('provider_id');
-            $table->foreignId('product_id')->nullable();
-            $table->foreignId('product_category_id')->nullable();
+            $table->foreignId('product_id');
+            $table->foreignId('product_category_id');
+
+            // $table->string('product_name')->nullable();
+            // $table->text('product_description')->nullable();
+
             $table->boolean('has_materiales');
             $table->boolean('has_transporte');
             $table->boolean('has_suministro');
             $table->boolean('has_instalacion');
+
             $table->decimal('quantity')->nullable();
             $table->decimal('price_per_unit', 20)->nullable();
             $table->decimal('total', 20)->nullable();

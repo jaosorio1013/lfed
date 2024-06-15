@@ -14,7 +14,6 @@ return new class extends Migration {
 
             $table->foreignId('product_project_provider_id');
 
-            $table->foreignId('product_id');
             $table->foreignId('product_category_id');
             $table->decimal('total', 20)->nullable();
 
