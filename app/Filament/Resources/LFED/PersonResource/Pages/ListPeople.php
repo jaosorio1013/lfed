@@ -16,4 +16,13 @@ class ListPeople extends ListRecords
             CreateAction::make(),
         ];
     }
+
+    public function getTabs(): array
+    {
+        return [
+            null => ListRecords\Tab::make('Todos'),
+            'Cliente' => ListRecords\Tab::make()->query(fn ($query) => $query->where('is_client', true)),
+            'Proveedor' => ListRecords\Tab::make()->query(fn ($query) => $query->where('is_provider', true)),
+        ];
+    }
 }

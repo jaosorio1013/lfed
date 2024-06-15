@@ -37,15 +37,18 @@ class ProductResource extends Resource
     {
         return $form
             ->schema([
-                TextInput::make('name')
-                    ->required(),
-
-                RichEditor::make('description'),
-
                 Select::make('product_category_id')
+                    ->columnSpanFull()
                     ->relationship('productCategory', 'name')
                     ->searchable()
                     ->required(),
+
+                TextInput::make('name')
+                    ->columnSpanFull()
+                    ->required(),
+
+                RichEditor::make('description')
+                    ->columnSpanFull(),
 
                 // TextInput::make('project_space_id')
                 //     ->integer(),

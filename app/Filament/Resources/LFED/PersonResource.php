@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\LFED;
 
 use App\Filament\Resources\LFED\PersonResource\Pages;
+use App\Filament\Resources\LFED\PersonResource\RelationManagers\ProjectsRelationManager;
 use App\Models\Person;
 use Filament\Forms\Components\Checkbox;
 use Filament\Forms\Components\Placeholder;
@@ -81,7 +82,7 @@ class PersonResource extends Resource
             ->columns([
                 // TextColumn::make('identification_type'),
 
-                TextColumn::make('identification_number'),
+                // TextColumn::make('identification_number'),
 
                 TextColumn::make('name')
                     ->searchable()
@@ -89,15 +90,15 @@ class PersonResource extends Resource
 
                 TextColumn::make('phone'),
 
-                TextColumn::make('email')
-                    ->searchable()
-                    ->sortable(),
+                // TextColumn::make('email')
+                //     ->searchable()
+                //     ->sortable(),
 
-                TextColumn::make('address'),
+                // TextColumn::make('address'),
 
-                TextColumn::make('is_provider'),
+                // TextColumn::make('is_provider'),
 
-                TextColumn::make('is_client'),
+                // TextColumn::make('is_client'),
 
                 TextColumn::make('is_active'),
             ])
@@ -139,5 +140,12 @@ class PersonResource extends Resource
     public static function getGloballySearchableAttributes(): array
     {
         return ['name', 'email'];
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            ProjectsRelationManager::class,
+        ];
     }
 }

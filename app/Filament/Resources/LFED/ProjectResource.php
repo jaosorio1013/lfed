@@ -3,9 +3,11 @@
 namespace App\Filament\Resources\LFED;
 
 use App\Filament\Resources\LFED\ProjectResource\Pages;
+use App\Filament\Resources\LFED\ProjectResource\RelationManagers\QuotesRelationManager;
 use App\Models\Project;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Form;
@@ -43,7 +45,11 @@ class ProjectResource extends Resource
                     ->required(),
 
                 TextInput::make('name')
+                    ->columnSpanFull()
                     ->required(),
+
+                RichEditor::make('description')
+                    ->columnSpanFull(),
 
                 DatePicker::make('won_at')
                     ->label('Won Date'),
@@ -149,5 +155,12 @@ class ProjectResource extends Resource
         }
 
         return $details;
+    }
+
+    public static function getRelations(): array
+    {
+        return [
+            QuotesRelationManager::class,
+        ];
     }
 }
