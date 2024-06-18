@@ -19,6 +19,7 @@ use Filament\Tables\Actions\ForceDeleteAction;
 use Filament\Tables\Actions\ForceDeleteBulkAction;
 use Filament\Tables\Actions\RestoreAction;
 use Filament\Tables\Actions\RestoreBulkAction;
+use Filament\Tables\Columns\IconColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\TrashedFilter;
 use Filament\Tables\Table;
@@ -80,6 +81,10 @@ class PersonResource extends Resource
     {
         return $table
             ->columns([
+                IconColumn::make('is_active')
+                    ->label('Activo')
+                    ->boolean(),
+
                 // TextColumn::make('identification_type'),
 
                 // TextColumn::make('identification_number'),
@@ -99,8 +104,6 @@ class PersonResource extends Resource
                 // TextColumn::make('is_provider'),
 
                 // TextColumn::make('is_client'),
-
-                TextColumn::make('is_active'),
             ])
             ->filters([
                 TrashedFilter::make(),
